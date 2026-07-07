@@ -1,0 +1,6 @@
+{
+  "name": "BikerTrip",
+  "description": "Plan, track, and share your motorcycle road trips. Manage routes, keep trip journals, track your statistics, and chat with an AI Copilot grounded in your locations.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

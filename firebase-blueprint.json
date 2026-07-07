@@ -1,0 +1,47 @@
+{
+  "entities": {
+    "Trip": {
+      "title": "Trip",
+      "description": "A motorcycle trip route and details",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "days": { "type": "integer" },
+        "difficulty": { "type": "string" },
+        "price": { "type": "number" },
+        "bookedSeats": { "type": "integer" },
+        "totalSeats": { "type": "integer" },
+        "location": { "type": "string" },
+        "image": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["name", "days", "difficulty", "price", "bookedSeats", "totalSeats", "location", "image", "description"]
+    },
+    "Booking": {
+      "title": "Booking",
+      "description": "A booking made by a user for a trip",
+      "type": "object",
+      "properties": {
+        "tripId": { "type": "string" },
+        "tripName": { "type": "string" },
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "seats": { "type": "integer" },
+        "totalPrice": { "type": "number" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["tripId", "tripName", "userId", "userEmail", "seats", "totalPrice", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "trips": {
+      "schema": "Trip",
+      "description": "Available motorcycle trips"
+    },
+    "bookings": {
+      "schema": "Booking",
+      "description": "User bookings for trips"
+    }
+  }
+}
