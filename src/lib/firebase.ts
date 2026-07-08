@@ -129,6 +129,10 @@ export interface Trip {
   duration?: string;
   distance?: string;
   bookedByUserIds?: string[];
+  startLocationName?: string;
+  startLatLng?: { lat: number; lng: number };
+  endLocationName?: string;
+  endLatLng?: { lat: number; lng: number };
 }
 
 export interface Booking {
@@ -171,7 +175,11 @@ export const INITIAL_TRIPS: Trip[] = [
     description: "Espectacular ruta por la Alpujarra granadina. Curvas infinitas, asfalto impecable y vistas majestuosas a Sierra Nevada. Distancia: 150km, Duración aproximada: 8h, Máximo 6 pilotos.",
     duration: "8h",
     distance: "150km",
-    bookedByUserIds: []
+    bookedByUserIds: [],
+    startLocationName: "Granada (Inicio)",
+    startLatLng: { lat: 37.1773, lng: -3.5986 },
+    endLocationName: "Trevélez (Fin)",
+    endLatLng: { lat: 36.9011, lng: -3.2661 }
   }
 ];
 

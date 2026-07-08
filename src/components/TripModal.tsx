@@ -21,6 +21,12 @@ export default function TripModal({ isOpen, onClose, onSave, tripToEdit }: TripM
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState("");
   const [distance, setDistance] = useState("");
+  const [startLocationName, setStartLocationName] = useState("");
+  const [startLat, setStartLat] = useState("");
+  const [startLng, setStartLng] = useState("");
+  const [endLocationName, setEndLocationName] = useState("");
+  const [endLat, setEndLat] = useState("");
+  const [endLng, setEndLng] = useState("");
 
   useEffect(() => {
     if (tripToEdit) {
@@ -35,6 +41,12 @@ export default function TripModal({ isOpen, onClose, onSave, tripToEdit }: TripM
       setDescription(tripToEdit.description || "");
       setDuration(tripToEdit.duration || "");
       setDistance(tripToEdit.distance || "");
+      setStartLocationName(tripToEdit.startLocationName || "");
+      setStartLat(tripToEdit.startLatLng?.lat !== undefined ? String(tripToEdit.startLatLng.lat) : "");
+      setStartLng(tripToEdit.startLatLng?.lng !== undefined ? String(tripToEdit.startLatLng.lng) : "");
+      setEndLocationName(tripToEdit.endLocationName || "");
+      setEndLat(tripToEdit.endLatLng?.lat !== undefined ? String(tripToEdit.endLatLng.lat) : "");
+      setEndLng(tripToEdit.endLatLng?.lng !== undefined ? String(tripToEdit.endLatLng.lng) : "");
     } else {
       setName("");
       setDays(1);
@@ -47,6 +59,12 @@ export default function TripModal({ isOpen, onClose, onSave, tripToEdit }: TripM
       setDescription("");
       setDuration("");
       setDistance("");
+      setStartLocationName("");
+      setStartLat("");
+      setStartLng("");
+      setEndLocationName("");
+      setEndLat("");
+      setEndLng("");
     }
   }, [tripToEdit, isOpen]);
 
@@ -55,6 +73,11 @@ export default function TripModal({ isOpen, onClose, onSave, tripToEdit }: TripM
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
+
+    const sLat = parseFloat(startLat);
+    const sLng = parseFloat(startLng);
+    const eLat = parseFloat(endLat);
+    const eLng = parseFloat(endLng);
 
     const tripData: Trip = {
       name,
@@ -68,7 +91,11 @@ export default function TripModal({ isOpen, onClose, onSave, tripToEdit }: TripM
       description: description.trim() || "Ruta de aventura en moto espectacular por las mejores curvas.",
       duration: duration.trim(),
       distance: distance.trim(),
-      bookedByUserIds: tripToEdit?.bookedByUserIds || []
+      bookedByUserIds: tripToEdit?.bookedByUserIds || [],
+      startLocationName: startLocationName.trim() || undefined,
+      startLatLng: (!isNaN(sLat) && !isNaN(sLng)) ? { lat: sLat, lng: sLng } : undefined,
+      endLocationName: endLocationName.trim() || undefined,
+      endLatLng: (!isNaN(eLat) && !isNaN(eLng)) ? { lat: eLat, lng: eLng } : undefined
     };
 
     if (tripToEdit?.id) {
@@ -259,6 +286,76 @@ export default function TripModal({ isOpen, onClose, onSave, tripToEdit }: TripM
                 placeholder="https://images.unsplash.com/photo..."
                 className="w-full bg-surface-container-low border border-glass-border rounded-xl px-4 py-3 outline-none focus:border-primary text-on-surface text-sm transition-all"
               />
+            </div>
+
+            {/* Google Maps Route Coordinates */}
+            <div className="col-span-1 md:col-span-2 border border-glass-border/40 p-4 rounded-2xl bg-white/2">
+              <h4 className="text-xs font-bold text-primary uppercase tracking-widest mb-3">Configuración de Google Maps</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Start Point */}
+                <div className="space-y-2">
+                  <label className="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                    Punto de Inicio (Nombre)
+                  </label>
+                  <input
+                    type="text"
+                    value={startLocationName}
+                    onChange={(e) => setStartLocationName(e.target.value)}
+                    placeholder="Ej: Granada, España"
+                    className="w-full bg-surface-container-low border border-glass-border rounded-xl px-3 py-2 outline-none focus:border-primary text-on-surface text-xs transition-all"
+                  />
+                  <div className="grid grid-cols-2 gap-2">
+                    <input
+                      type="number"
+                      step="any"
+                      value={startLat}
+                      onChange={(e) => setStartLat(e.target.value)}
+                      placeholder="Lat: 37.1773"
+                      className="w-full bg-surface-container-low border border-glass-border rounded-xl px-3 py-2 outline-none focus:border-primary text-on-surface text-xs transition-all"
+                    />
+                    <input
+                      type="number"
+                      step="any"
+                      value={startLng}
+                      onChange={(e) => setStartLng(e.target.value)}
+                      placeholder="Lng: -3.5986"
+                      className="w-full bg-surface-container-low border border-glass-border rounded-xl px-3 py-2 outline-none focus:border-primary text-on-surface text-xs transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* End Point */}
+                <div className="space-y-2">
+                  <label className="block text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
+                    Punto de Destino (Nombre)
+                  </label>
+                  <input
+                    type="text"
+                    value={endLocationName}
+                    onChange={(e) => setEndLocationName(e.target.value)}
+                    placeholder="Ej: Trevélez, España"
+                    className="w-full bg-surface-container-low border border-glass-border rounded-xl px-3 py-2 outline-none focus:border-primary text-on-surface text-xs transition-all"
+                  />
+                  <div className="grid grid-cols-2 gap-2">
+                    <input
+                      type="number"
+                      step="any"
+                      value={endLat}
+                      onChange={(e) => setEndLat(e.target.value)}
+                      placeholder="Lat: 36.9011"
+                      className="w-full bg-surface-container-low border border-glass-border rounded-xl px-3 py-2 outline-none focus:border-primary text-on-surface text-xs transition-all"
+                    />
+                    <input
+                      type="number"
+                      step="any"
+                      value={endLng}
+                      onChange={(e) => setEndLng(e.target.value)}
+                      placeholder="Lng: -3.2661"
+                      className="w-full bg-surface-container-low border border-glass-border rounded-xl px-3 py-2 outline-none focus:border-primary text-on-surface text-xs transition-all"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Description */}

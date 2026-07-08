@@ -1,25 +1,95 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    
+    // Global Safety Net (Pillar 1)
     match /{document=**} {
       allow read, write: if false;
     }
 
+    // --- Helper Functions ---
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    
+    // Admin checks for both the user's Google Auth email and the demo admin ID
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'jjmariotg@gmail.com' ||
+        request.auth.uid == 'demo-jjmario-123'
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // --- Trips Collection ---
     match /trips/{tripId} {
       allow read: if true;
-      allow write: if true;
+      allow create: if isAdmin() && isValidTrip(request.resource.data);
+      allow update: if isAdmin() && isValidTrip(request.resource.data);
+      allow delete: if isAdmin();
     }
 
+    function isValidTrip(data) {
+      return data.keys().hasAll(['name', 'days', 'difficulty', 'price', 'bookedSeats', 'totalSeats', 'location', 'image', 'description'])
+        && data.name is string && data.name.size() <= 100
+        && data.days is int && data.days > 0
+        && data.difficulty is string && data.difficulty.size() <= 20
+        && data.price is number && data.price >= 0
+        && data.bookedSeats is int && data.bookedSeats >= 0
+        && data.totalSeats is int && data.totalSeats > 0
+        && data.location is string && data.location.size() <= 100
+        && data.image is string && data.image.size() <= 1000
+        && data.description is string && data.description.size() <= 2000;
+    }
+
+    // --- Bookings Collection ---
     match /bookings/{bookingId} {
-      allow read: if request.auth != null && (resource == null || resource.data.userId == request.auth.uid);
-      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow get: if isOwner(resource.data.userId) || isAdmin();
+      allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isSignedIn() && isValidBooking(request.resource.data) && isOwner(request.resource.data.userId);
+      allow update: if isSignedIn() && isValidBooking(request.resource.data) && (isOwner(resource.data.userId) || isAdmin());
+      allow delete: if isSignedIn() && (isOwner(resource.data.userId) || isAdmin());
     }
 
+    function isValidBooking(data) {
+      return data.keys().hasAll(['tripId', 'tripName', 'userId', 'userEmail', 'userName', 'bookingDate', 'status', 'seats', 'priceTotal'])
+        && data.tripId is string && data.tripId.size() <= 128
+        && data.tripName is string && data.tripName.size() <= 100
+        && data.userId is string && data.userId.size() <= 128
+        && data.userEmail is string && data.userEmail.size() <= 100
+        && data.userName is string && data.userName.size() <= 100
+        && data.bookingDate is string && data.bookingDate.size() <= 50
+        && data.status is string && (data.status == 'Confirmado' || data.status == 'Pendiente' || data.status == 'Cancelado')
+        && data.seats is int && data.seats > 0
+        && data.priceTotal is number && data.priceTotal >= 0;
+    }
+
+    // --- Reviews Collection ---
     match /reviews/{reviewId} {
       allow read: if true;
-      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
-      allow update, delete: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidReview(request.resource.data) && isOwner(request.resource.data.userId);
+      allow update: if isSignedIn() && isValidReview(request.resource.data) && (isOwner(resource.data.userId) || isAdmin());
+      allow delete: if isSignedIn() && (isOwner(resource.data.userId) || isAdmin());
+    }
+
+    function isValidReview(data) {
+      return data.keys().hasAll(['tripId', 'tripName', 'userId', 'userName', 'ratingRoute', 'ratingGuide', 'comment', 'createdAt'])
+        && data.tripId is string && data.tripId.size() <= 128
+        && data.tripName is string && data.tripName.size() <= 100
+        && data.userId is string && data.userId.size() <= 128
+        && data.userName is string && data.userName.size() <= 100
+        && data.ratingRoute is int && data.ratingRoute >= 1 && data.ratingRoute <= 5
+        && data.ratingGuide is int && data.ratingGuide >= 1 && data.ratingGuide <= 5
+        && data.comment is string && data.comment.size() <= 1000
+        && data.createdAt is string && data.createdAt.size() <= 50;
     }
   }
 }

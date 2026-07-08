@@ -13,7 +13,10 @@
         "totalSeats": { "type": "integer" },
         "location": { "type": "string" },
         "image": { "type": "string" },
-        "description": { "type": "string" }
+        "description": { "type": "string" },
+        "duration": { "type": "string" },
+        "distance": { "type": "string" },
+        "bookedByUserIds": { "type": "array" }
       },
       "required": ["name", "days", "difficulty", "price", "bookedSeats", "totalSeats", "location", "image", "description"]
     },
@@ -26,12 +29,30 @@
         "tripName": { "type": "string" },
         "userId": { "type": "string" },
         "userEmail": { "type": "string" },
-        "seats": { "type": "integer" },
-        "totalPrice": { "type": "number" },
+        "userName": { "type": "string" },
+        "bookingDate": { "type": "string" },
         "status": { "type": "string" },
+        "seats": { "type": "integer" },
+        "priceTotal": { "type": "number" }
+      },
+      "required": ["tripId", "tripName", "userId", "userEmail", "userName", "bookingDate", "status", "seats", "priceTotal"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "A review for a trip written by a user",
+      "type": "object",
+      "properties": {
+        "tripId": { "type": "string" },
+        "tripName": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userPhotoURL": { "type": "string" },
+        "ratingRoute": { "type": "integer" },
+        "ratingGuide": { "type": "integer" },
+        "comment": { "type": "string" },
         "createdAt": { "type": "string" }
       },
-      "required": ["tripId", "tripName", "userId", "userEmail", "seats", "totalPrice", "status", "createdAt"]
+      "required": ["tripId", "tripName", "userId", "userName", "ratingRoute", "ratingGuide", "comment", "createdAt"]
     }
   },
   "firestore": {
@@ -42,6 +63,10 @@
     "bookings": {
       "schema": "Booking",
       "description": "User bookings for trips"
+    },
+    "reviews": {
+      "schema": "Review",
+      "description": "User reviews for motorcycle trips"
     }
   }
 }

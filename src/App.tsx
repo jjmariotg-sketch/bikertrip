@@ -68,6 +68,7 @@ import {
 import Chatbot from "./components/Chatbot";
 import TripModal from "./components/TripModal";
 import ReviewsView from "./components/ReviewsView";
+import RouteMap from "./components/RouteMap";
 
 // Current mock user ID for demo purposes
 const DEMO_USER = {
@@ -194,140 +195,60 @@ function LandingPageView({ trips, onExploreTrips, onDemoAccess, currentUser }: L
           </div>
         </div>
 
-        {/* Right Side Live Telemetry Widget - Derived directly from the Geometric Balance HTML template! */}
-        <div className="lg:col-span-7 bg-[#16191F] rounded-3xl border border-slate-800 p-6 flex flex-col gap-6 shadow-2xl relative overflow-hidden glowing-accent">
-          {/* Header of widget */}
-          <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 bg-primary rounded flex items-center justify-center font-bold text-black text-xs">BT</div>
-              <h3 className="text-sm font-bold tracking-tight text-white uppercase font-mono">
-                BIKERTRIP <span className="text-slate-500 font-normal">/ RUTA 40 LIVE</span>
-              </h3>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-              <span className="text-[10px] font-mono text-green-400 font-semibold tracking-wider">FIREBASE_CONNECTED</span>
-            </div>
+        {/* Right Side - Hero Promotional Banner (Reclamo Publicitario) */}
+        <div className="lg:col-span-7 relative group rounded-3xl overflow-hidden border border-glass-border shadow-2xl aspect-[16/10] bg-[#16191F] flex flex-col justify-end">
+          {/* Main Hero Promotional Image */}
+          <img 
+            src="/src/assets/images/biker_desert_adventure_1783501844145.jpg" 
+            alt="Expedición Biker Desert Adventure" 
+            referrerPolicy="no-referrer"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          {/* Elegant Dark Vignette Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0B0E] via-black/10 to-black/30"></div>
+          
+          {/* Floating Promotional Badges */}
+          <div className="absolute top-4 left-4 z-10 flex gap-2">
+            <span className="bg-[#ff7a00] text-black font-extrabold text-[9px] tracking-widest uppercase px-3 py-1.5 rounded-xl shadow-lg border border-white/10 flex items-center gap-1 select-none">
+              ★ NUEVA RUTA
+            </span>
+            <span className="bg-black/60 backdrop-blur-md text-white font-extrabold text-[9px] tracking-widest uppercase px-3 py-1.5 rounded-xl border border-glass-border select-none">
+              EXPLORACIÓN 2026
+            </span>
           </div>
 
-          {/* Grid Layout inside Tracker */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-            {/* SVG Tracker Representation (Col-span 7) */}
-            <div className="md:col-span-7 bg-[#0F1115] rounded-2xl border border-slate-800 aspect-[4/3] relative overflow-hidden flex flex-col">
-              {/* Overlay Point and Dist */}
-              <div className="absolute top-4 left-4 z-10 flex gap-1.5">
-                <div className="bg-black/75 backdrop-blur-md border border-slate-700 px-2.5 py-1 rounded-lg">
-                  <p className="text-[8px] text-slate-400 uppercase font-bold">Próximo Punto</p>
-                  <p className="text-xs font-extrabold text-white">Villa La Angostura</p>
-                </div>
-                <div className="bg-black/75 backdrop-blur-md border border-slate-700 px-2.5 py-1 rounded-lg">
-                  <p className="text-[8px] text-slate-400 uppercase font-bold">Distancia</p>
-                  <p className="text-xs font-extrabold text-primary">{distance} km</p>
-                </div>
-              </div>
+          <div className="absolute top-4 right-4 z-10 bg-[#10B981] text-white font-extrabold text-[9px] tracking-widest uppercase px-3 py-1.5 rounded-xl shadow-lg border border-white/10 select-none">
+            ¡INSCRIPCIONES ABIERTAS!
+          </div>
 
-              {/* Live Speedometer overlay */}
-              <div className="absolute bottom-4 right-4 z-10 text-right leading-none">
-                <div className="text-4xl font-black text-white italic font-mono">{speed}</div>
-                <div className="text-[9px] text-primary font-bold uppercase tracking-widest mt-0.5">km/h</div>
-              </div>
-
-              {/* Grid map drawing */}
-              <div className="w-full h-full bg-[#1c2129] flex items-center justify-center relative">
-                <svg viewBox="0 0 400 300" className="w-full h-full opacity-60">
-                  <path d="M50,250 C120,225 150,150 250,125 S350,50 375,25" stroke="#F97316" strokeWidth="3" fill="none" strokeDasharray="6 3" />
-                  <circle cx="50" cy="250" r="5" fill="#F97316" />
-                  <circle cx="250" cy="125" r="5" fill="#F97316" />
-                  {/* Pulsing bike position */}
-                  <circle cx="310" cy="80" r="7" fill="#F97316" stroke="white" strokeWidth="2" className="animate-pulse" />
-                  <rect x="0" y="0" width="400" height="300" fill="url(#tracker-grid)" />
-                  <defs>
-                    <pattern id="tracker-grid" width="25" height="25" patternUnits="userSpaceOnUse">
-                      <path d="M 25 0 L 0 0 0 25" fill="none" stroke="#2D3748" strokeWidth="0.5" />
-                    </pattern>
-                  </defs>
-                </svg>
-              </div>
+          {/* Bottom Advertising Text Overlay */}
+          <div className="relative z-10 p-6 md:p-8 bg-[#0F1115]/95 border-t border-glass-border/40 backdrop-blur-md space-y-3">
+            <div className="space-y-1">
+              <span className="text-[10px] text-primary font-bold uppercase tracking-widest block font-mono">RECLAMO EXCLUSIVO BIKERTRIP</span>
+              <h3 className="text-white font-display font-extrabold text-xl md:text-2xl tracking-tight leading-snug">
+                Expedición Almería-Granada: Conquista el Desierto
+              </h3>
             </div>
-
-            {/* Live Stats and Riders list (Col-span 5) */}
-            <div className="md:col-span-5 flex flex-col gap-5 justify-between">
-              {/* Stats group */}
-              <div className="space-y-3">
-                <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Telemetría de Grupo</h4>
-                <div className="grid grid-cols-2 gap-2.5">
-                  <div className="bg-[#0F1115] p-3 rounded-xl border border-slate-800">
-                    <p className="text-[8px] text-slate-500 uppercase">Altitud</p>
-                    <p className="text-sm font-extrabold text-white font-mono mt-0.5">{altitude}m</p>
-                  </div>
-                  <div className="bg-[#0F1115] p-3 rounded-xl border border-slate-800">
-                    <p className="text-[8px] text-slate-500 uppercase">Tiempo Trans.</p>
-                    <p className="text-sm font-extrabold text-white font-mono mt-0.5">03:45h</p>
-                  </div>
-                </div>
-                {/* Progress bar */}
-                <div className="space-y-1.5 pt-1">
-                  <div className="flex justify-between text-[9px] text-slate-400">
-                    <span>Progreso General</span>
-                    <span className="font-mono text-primary font-bold">65%</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-[#0F1115] rounded-full overflow-hidden border border-slate-800">
-                    <div className="bg-primary h-full w-[65%] rounded-full transition-all duration-300"></div>
-                  </div>
-                </div>
+            <p className="text-on-surface-variant text-xs leading-relaxed max-w-xl">
+              Siente la libertad absoluta surcando los paisajes más indómitos de Andalucía. Un viaje épico de 3 días atravesando pistas desérticas y puertos de montaña legendarios. Reserva hoy con nuestro descuento de lanzamiento del <span className="text-primary font-bold">15%</span>.
+            </p>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-1.5 text-[10px] font-mono text-on-surface-variant">
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                <span>Distancia: <strong className="text-white">420 km</strong></span>
               </div>
-
-              {/* Rider List Online */}
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Grupo (3 Online)</h4>
-                  <span className="text-[9px] font-mono text-primary bg-primary/10 border border-primary/20 px-1.5 py-0.5 rounded">Ruta 40</span>
-                </div>
-                
-                <div className="space-y-2 max-h-[140px] overflow-y-auto custom-scrollbar">
-                  <div className="flex items-center justify-between p-2 bg-[#0F1115]/80 rounded-lg border border-slate-800/60">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-primary/20 text-primary rounded-full border border-primary/40 flex items-center justify-center text-[9px] font-bold">JD</div>
-                      <div className="text-left">
-                        <p className="text-[11px] font-bold text-white leading-none">Juan Díaz (Líder)</p>
-                        <p className="text-[8px] text-slate-500">BMW R 1250 GS</p>
-                      </div>
-                    </div>
-                    <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></div>
-                  </div>
-
-                  <div className="flex items-center justify-between p-2 bg-[#0F1115]/80 rounded-lg border border-slate-800/40">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-blue-500/20 text-blue-400 rounded-full border border-blue-500/30 flex items-center justify-center text-[9px] font-bold">SC</div>
-                      <div className="text-left">
-                        <p className="text-[11px] font-bold text-white leading-none">Sofía Castro</p>
-                        <p className="text-[8px] text-slate-500">Ducati Multistrada</p>
-                      </div>
-                    </div>
-                    <div className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></div>
-                  </div>
-
-                  <div className="flex items-center justify-between p-2 bg-[#0F1115]/80 rounded-lg border border-slate-800/40">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-purple-500/20 text-purple-400 rounded-full border border-purple-500/30 flex items-center justify-center text-[9px] font-bold">AM</div>
-                      <div className="text-left">
-                        <p className="text-[11px] font-bold text-white leading-none">Andrés Morales</p>
-                        <p className="text-[8px] text-slate-500">Yamaha Ténéré</p>
-                      </div>
-                    </div>
-                    <div className="h-1.5 w-1.5 rounded-full bg-amber-500"></div>
-                  </div>
-                </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                <span>Duración: <strong className="text-white">3 Días</strong></span>
               </div>
-
-              {/* Copy/Share live tracking link button */}
-              <button
-                onClick={handleShareLocation}
-                className="w-full py-2.5 bg-primary text-[#0F1115] font-bold rounded-xl text-xs uppercase tracking-widest transition-all hover:opacity-90 active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                <Globe className="w-3.5 h-3.5" />
-                {copiedLink ? "¡Enlace Copiado!" : "Compartir Mi Ubicación"}
-              </button>
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                <span>Nivel: <strong className="text-white">Medio-Alto</strong></span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]"></span>
+                <span className="text-[#10B981] font-bold">Últimas 3 plazas</span>
+              </div>
             </div>
           </div>
         </div>
@@ -468,11 +389,13 @@ export default function App() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [currentUser, setCurrentUser] = useState<any>(DEMO_USER);
   const [activeTab, setActiveTab] = useState<"landing" | "catalog" | "user" | "admin" | "reviews">("landing");
+  const [adminSubTab, setAdminSubTab] = useState<"dashboard" | "pilot">("dashboard");
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [difficultyFilter, setDifficultyFilter] = useState("all");
   const [mapSelectedLocation, setMapSelectedLocation] = useState<string | null>(null);
+  const [selectedMapTrip, setSelectedMapTrip] = useState<Trip | null>(null);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -834,7 +757,12 @@ export default function App() {
         }
 
         showToast(`¡Reserva confirmada para ${trip.name}!`, "success");
-        setActiveTab(isAdminUser(currentUser) ? "user" : "catalog");
+        if (isAdminUser(currentUser)) {
+          setActiveTab("admin");
+          setAdminSubTab("pilot");
+        } else {
+          setActiveTab("catalog");
+        }
       } else {
         await addBooking(newBooking);
         
@@ -862,7 +790,12 @@ export default function App() {
         setBookings(userBookings);
 
         showToast(`¡Reserva confirmada para ${trip.name}!`, "success");
-        setActiveTab(isAdminUser(currentUser) ? "user" : "catalog");
+        if (isAdminUser(currentUser)) {
+          setActiveTab("admin");
+          setAdminSubTab("pilot");
+        } else {
+          setActiveTab("catalog");
+        }
       }
     } catch (err) {
       console.error(err);
@@ -969,16 +902,16 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-primary-container to-primary flex items-center justify-center text-[#0F1115] shadow-lg shadow-primary-container/20">
-                <Compass className="w-6 h-6 animate-spin-slow text-[#0F1115]" />
-              </div>
-              <div>
-                <h1 className="font-display font-extrabold text-xl tracking-tight text-white flex items-center gap-1.5">
-                  BikerTrip <span className="text-primary text-xs uppercase font-mono bg-white/5 px-2 py-0.5 rounded border border-white/10">v2.1</span>
-                </h1>
-                <p className="text-[10px] text-on-surface-variant font-medium tracking-wide uppercase">Ruta Libre • Motor Aventuras</p>
-              </div>
+            <div 
+              onClick={() => setActiveTab("landing")} 
+              className="flex items-center cursor-pointer group transition-all h-20"
+            >
+              <img 
+                src="/src/assets/images/bikertrip_logo_clean_1783505511852.jpg" 
+                alt="BikerTrip Logo" 
+                referrerPolicy="no-referrer"
+                className="h-16 w-auto object-contain group-hover:scale-105 transition-all duration-300"
+              />
             </div>
 
             {/* Navigation Tabs */}
@@ -1007,20 +940,6 @@ export default function App() {
                 Explorar Catálogo
               </button>
 
-              {isAdminUser(currentUser) && (
-                <button
-                  onClick={() => setActiveTab("user")}
-                  className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all flex items-center gap-2 cursor-pointer ${
-                    activeTab === "user" 
-                      ? "bg-primary text-[#0F1115] shadow-md shadow-primary/10" 
-                      : "text-on-surface-variant hover:text-white hover:bg-white/5"
-                  }`}
-                >
-                  <User className="w-4 h-4" />
-                  Mi Panel de Piloto
-                </button>
-              )}
-
               <button
                 onClick={() => setActiveTab("reviews")}
                 className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all flex items-center gap-2 cursor-pointer ${
@@ -1035,7 +954,7 @@ export default function App() {
 
               {isAdminUser(currentUser) && (
                 <button
-                  onClick={() => setActiveTab("admin")}
+                  onClick={() => { setActiveTab("admin"); setAdminSubTab("dashboard"); }}
                   className={`px-5 py-2.5 rounded-xl font-semibold text-sm transition-all flex items-center gap-2 cursor-pointer ${
                     activeTab === "admin" 
                       ? "bg-primary text-[#0F1115] shadow-md shadow-primary/10" 
@@ -1043,7 +962,7 @@ export default function App() {
                   }`}
                 >
                   <Shield className="w-4 h-4" />
-                  Gestión Admin
+                  Panel de Control
                 </button>
               )}
             </nav>
@@ -1132,17 +1051,6 @@ export default function App() {
           <Compass className="w-4 h-4" />
           Explorar
         </button>
-        {isAdminUser(currentUser) && (
-          <button
-            onClick={() => setActiveTab("user")}
-            className={`px-3 py-2 rounded-lg text-xs font-bold flex flex-col items-center gap-1 ${
-              activeTab === "user" ? "text-primary" : "text-on-surface-variant"
-            }`}
-          >
-            <User className="w-4 h-4" />
-            Mi Panel
-          </button>
-        )}
         <button
           onClick={() => setActiveTab("reviews")}
           className={`px-3 py-2 rounded-lg text-xs font-bold flex flex-col items-center gap-1 ${
@@ -1154,13 +1062,13 @@ export default function App() {
         </button>
         {isAdminUser(currentUser) && (
           <button
-            onClick={() => setActiveTab("admin")}
+            onClick={() => { setActiveTab("admin"); setAdminSubTab("dashboard"); }}
             className={`px-3 py-2 rounded-lg text-xs font-bold flex flex-col items-center gap-1 ${
               activeTab === "admin" ? "text-primary" : "text-on-surface-variant"
             }`}
           >
             <Shield className="w-4 h-4" />
-            Admin
+            Control
           </button>
         )}
       </div>
@@ -1218,72 +1126,28 @@ export default function App() {
                 {/* Grid layout containing Interactive Map and Search filters */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                   {/* Left Column: Interactive Map */}
-                  <div className="lg:col-span-8 glass-panel rounded-3xl p-6 flex flex-col border border-glass-border bg-surface-container-low relative">
+                  <div className="lg:col-span-8 glass-panel rounded-3xl p-6 flex flex-col border border-glass-border bg-surface-container-low relative justify-between">
                     <div className="flex items-center justify-between mb-4">
                       <div>
-                        <h3 className="font-bold text-base text-white">Mapa Interactivo de Destinos</h3>
-                        <p className="text-xs text-on-surface-variant/70">Haz clic en los puntos calientes para filtrar las rutas de ese país</p>
+                        <h3 className="font-display font-extrabold text-lg text-white">Mapa de Expediciones Activas</h3>
+                        <p className="text-xs text-on-surface-variant/70">Visualiza el itinerario y los puntos de inicio (A) y fin (B) de cada viaje</p>
                       </div>
-                      {mapSelectedLocation && (
+                      {selectedMapTrip && (
                         <button
-                          onClick={() => setMapSelectedLocation(null)}
-                          className="px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-lg text-xs font-semibold hover:bg-primary/30 transition-all"
+                          onClick={() => setSelectedMapTrip(null)}
+                          className="px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-lg text-xs font-semibold hover:bg-primary/30 transition-all cursor-pointer"
                         >
                           Mostrar todos los destinos
                         </button>
                       )}
                     </div>
 
-                    {/* SVG Map Representation */}
-                    <div className="relative bg-[#0A0B0E] rounded-2xl aspect-[16/9] border border-glass-border overflow-hidden flex items-center justify-center">
-                      {/* Grid overlay */}
-                      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
-
-                      <svg 
-                        viewBox="0 0 350 260" 
-                        className="w-full h-full max-h-[380px] text-on-surface-variant/20 fill-current opacity-80"
-                      >
-                        {/* Europe & World continent outline simulation */}
-                        <path d="M 120 40 Q 150 30 180 35 T 220 50 T 260 60 T 290 80 T 320 120 T 300 160 T 270 200 T 250 240 Q 220 220 190 230 T 150 240 T 120 210 Q 110 180 90 150 T 60 120 T 40 80 Q 70 60 100 50 Z" className="text-surface-container-high/60" />
-                        <path d="M 150 45 Q 160 35 180 40 T 200 65 T 210 100 T 200 130 T 170 160 T 140 180 T 120 150 Q 110 120 120 90 T 140 60 Z" className="text-surface-container-highest/60" />
-                      </svg>
-
-                      {/* Map Hotspots / Markers */}
-                      {MAP_MARKERS.map((m) => {
-                        const isSelected = mapSelectedLocation?.toLowerCase() === m.name.toLowerCase();
-                        return (
-                          <button
-                            key={m.name}
-                            onClick={() => setMapSelectedLocation(isSelected ? null : m.name)}
-                            style={{ left: `${(m.x / 350) * 100}%`, top: `${(m.y / 260) * 100}%` }}
-                            className="absolute -translate-x-1/2 -translate-y-1/2 group z-20 focus:outline-none"
-                          >
-                            {/* Ripple circle */}
-                            <span className={`absolute inline-flex h-6 w-6 rounded-full opacity-75 -left-1 -top-1 animate-ping ${
-                              isSelected ? "bg-primary" : "bg-primary-container"
-                            }`}></span>
-                            
-                            {/* Interactive Core Marker */}
-                            <div className={`relative h-4 w-4 rounded-full border shadow-xl transition-all duration-300 transform group-hover:scale-125 ${
-                              isSelected 
-                                ? "bg-white border-primary-container scale-110" 
-                                : "bg-primary border-[#0F1115]"
-                            }`}></div>
-
-                            {/* Label popup */}
-                            <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-surface-container-highest/95 border border-glass-border px-2 py-1 rounded-lg text-[9px] text-white font-bold opacity-80 group-hover:opacity-100 whitespace-nowrap shadow-lg select-none transition-all">
-                              {m.name}
-                            </div>
-                          </button>
-                        );
-                      })}
-                      
-                      <div className="absolute bottom-3 left-3 flex gap-2 bg-[#0F1115]/90 border border-glass-border px-3 py-1.5 rounded-lg">
-                        <div className="flex items-center gap-1.5">
-                          <span className="w-2.5 h-2.5 rounded-full bg-primary"></span>
-                          <span className="text-[10px] text-on-surface-variant font-medium">Marcadores Activos BikerTrip</span>
-                        </div>
-                      </div>
+                    <div className="flex-1 w-full min-h-[350px]">
+                      <RouteMap 
+                        trips={trips} 
+                        selectedTrip={selectedMapTrip} 
+                        onSelectTrip={setSelectedMapTrip} 
+                      />
                     </div>
                   </div>
 
@@ -1546,18 +1410,37 @@ export default function App() {
                                 </div>
                               </div>
 
-                              {/* Booking Button */}
-                              <button
-                                onClick={() => handleBookTrip(trip)}
-                                disabled={isFull}
-                                className={`w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
-                                  isFull 
-                                    ? "bg-white/5 border border-glass-border text-on-surface-variant/40 cursor-not-allowed" 
-                                    : "bg-primary text-[#0F1115] hover:scale-[1.02] active:scale-95 glow-btn font-extrabold"
-                                }`}
-                              >
-                                {isFull ? "Siguiente grupo completo" : "Inscribirme en esta Ruta"}
-                              </button>
+                              {/* Action Buttons */}
+                              <div className="flex gap-2.5 pt-2">
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedMapTrip(trip);
+                                    const mapElement = document.querySelector(".lg\\:col-span-8");
+                                    if (mapElement) {
+                                      mapElement.scrollIntoView({ behavior: "smooth", block: "center" });
+                                    }
+                                  }}
+                                  className="flex-1 py-3 px-2 bg-[#1A1E26] border border-glass-border hover:bg-[#ff7a00]/10 hover:border-[#ff7a00]/30 rounded-xl font-bold text-xs uppercase tracking-wider text-on-surface-variant hover:text-white transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                                >
+                                  <Compass className="w-3.5 h-3.5 text-[#ff7a00]" />
+                                  Ver Mapa
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={() => handleBookTrip(trip)}
+                                  disabled={isFull}
+                                  className={`flex-1 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
+                                    isFull 
+                                      ? "bg-white/5 border border-glass-border text-on-surface-variant/40 cursor-not-allowed" 
+                                      : "bg-primary text-[#0F1115] hover:scale-[1.02] active:scale-95 glow-btn font-extrabold"
+                                  }`}
+                                >
+                                  {isFull ? "Completo" : "Reservar"}
+                                </button>
+                              </div>
                             </div>
                           </div>
                         );
@@ -1570,8 +1453,36 @@ export default function App() {
 
 
             {/* VIEW 2: PANEL DE USUARIO (JJMARIO) */}
-            {activeTab === "user" && (
-              <div className="space-y-8 text-left">
+            {activeTab === "admin" && adminSubTab === "pilot" && (
+              <div className="space-y-8 text-left animate-fade-in">
+                {/* Segmented Control Selector */}
+                <div className="flex justify-center sm:justify-start">
+                  <div className="bg-[#16191F] border border-glass-border p-1.5 rounded-2xl flex items-center gap-1.5 shadow-xl">
+                    <button
+                      onClick={() => setAdminSubTab("dashboard")}
+                      className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                        adminSubTab === "dashboard"
+                          ? "bg-primary text-[#0F1115] shadow-md shadow-primary/10"
+                          : "text-on-surface-variant hover:text-white hover:bg-white/5"
+                      }`}
+                    >
+                      <Shield className="w-4 h-4" />
+                      Gestión de Administración
+                    </button>
+                    <button
+                      onClick={() => setAdminSubTab("pilot")}
+                      className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                        adminSubTab === "pilot"
+                          ? "bg-primary text-[#0F1115] shadow-md shadow-primary/10"
+                          : "text-on-surface-variant hover:text-white hover:bg-white/5"
+                      }`}
+                    >
+                      <User className="w-4 h-4" />
+                      Mi Panel de Piloto
+                    </button>
+                  </div>
+                </div>
+
                 {/* Custom Banner Profile */}
                 <div className="relative p-6 md:p-8 rounded-3xl overflow-hidden glass-panel border border-glass-border flex flex-col md:flex-row items-center gap-6 justify-between bg-gradient-to-r from-surface-container to-surface-container-low">
                   <div className="absolute -right-12 -top-12 opacity-10 pointer-events-none transform rotate-12">
@@ -1822,8 +1733,36 @@ export default function App() {
 
 
             {/* VIEW 3: ADMIN CONTROL PANEL */}
-            {activeTab === "admin" && (
-              <div className="space-y-8 text-left">
+            {activeTab === "admin" && adminSubTab === "dashboard" && (
+              <div className="space-y-8 text-left animate-fade-in">
+                {/* Segmented Control Selector */}
+                <div className="flex justify-center sm:justify-start">
+                  <div className="bg-[#16191F] border border-glass-border p-1.5 rounded-2xl flex items-center gap-1.5 shadow-xl">
+                    <button
+                      onClick={() => setAdminSubTab("dashboard")}
+                      className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                        adminSubTab === "dashboard"
+                          ? "bg-primary text-[#0F1115] shadow-md shadow-primary/10"
+                          : "text-on-surface-variant hover:text-white hover:bg-white/5"
+                      }`}
+                    >
+                      <Shield className="w-4 h-4" />
+                      Gestión de Administración
+                    </button>
+                    <button
+                      onClick={() => setAdminSubTab("pilot")}
+                      className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+                        adminSubTab === "pilot"
+                          ? "bg-primary text-[#0F1115] shadow-md shadow-primary/10"
+                          : "text-on-surface-variant hover:text-white hover:bg-white/5"
+                      }`}
+                    >
+                      <User className="w-4 h-4" />
+                      Mi Panel de Piloto
+                    </button>
+                  </div>
+                </div>
+
                 {/* Stats row */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                   {/* Total Sales (calculated) */}

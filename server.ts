@@ -11,21 +11,36 @@ const PORT = 3000;
 
 app.use(express.json());
 
-// Initialize Gemini API client on the server side
-let ai: GoogleGenAI | null = null;
-const apiKey = process.env.GEMINI_API_KEY;
+// Lazy-initialize Gemini API client on the server side
+let aiClient: GoogleGenAI | null = null;
 
-if (apiKey) {
-  ai = new GoogleGenAI({ apiKey });
-  console.log("Gemini API client initialized successfully.");
-} else {
-  console.warn("GEMINI_API_KEY environment variable is not defined.");
+function getGeminiClient(): GoogleGenAI {
+  if (!aiClient) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error("GEMINI_API_KEY is not defined. Please configure it in your Secrets panel.");
+    }
+    aiClient = new GoogleGenAI({
+      apiKey,
+      httpOptions: {
+        headers: {
+          "User-Agent": "aistudio-build",
+        },
+      },
+    });
+    console.log("Gemini API client initialized successfully with User-Agent headers.");
+  }
+  return aiClient;
 }
 
 // API endpoint for chatbot proxying
 app.post("/api/chat", async (req, res) => {
   try {
-    if (!ai) {
+    let ai;
+    try {
+      ai = getGeminiClient();
+    } catch (e: any) {
+      console.warn("Gemini client initialization failed:", e.message);
       return res.status(500).json({
         error: "Gemini API is not configured on the server. Please define GEMINI_API_KEY in secrets.",
       });
